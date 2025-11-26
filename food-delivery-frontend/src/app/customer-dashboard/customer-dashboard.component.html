@@ -1,0 +1,181 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-end p-3">
+    <button class="logout-icon-btn" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span class="logout-text">Logout</span>
+    </button>
+
+  </div>
+
+  <h2 class="mb-4 text-center">Customer Dashboard</h2>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="alert alert-info text-center">Loading menu items...</div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+
+  <!-- Menu Items -->
+  <div class="row" *ngIf="!loading && menuItems.length > 0">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4" *ngFor="let item of menuItems">
+      <div class="card h-100 shadow-sm">
+        <img *ngIf="item.image" [src]="item.image" class="card-img-top" alt="{{ item.name }}"
+          style="height: 200px; object-fit: cover;">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ item.name }}</h5>
+          <p class="card-text mb-2">
+            Price: <strong>₹{{ item.price }}</strong><br>
+            Type: <span class="badge"
+              [ngClass]="item.veg === null ? 'bg-secondary' : (item.veg ? 'bg-success' : 'bg-danger')">
+              {{ item.veg === null ? 'Unknown' : (item.veg ? 'Veg' : 'Non-Veg') }}
+            </span>
+          </p>
+          <div class="d-flex align-items-center mb-3">
+            <button class="btn btn-outline-secondary btn-sm me-2" (click)="decrement(item)">-</button>
+            <span class="fw-bold mx-2">{{ item.quantity || 0 }}</span>
+            <button class="btn btn-outline-secondary btn-sm ms-2" (click)="increment(item)">+</button>
+          </div>
+          <button class="btn btn-add-cart mt-auto w-100" (click)="addToCart(item)"
+            [disabled]="!item.quantity || item.quantity === 0">
+            <i class="bi bi-cart-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Menu Items -->
+  <div *ngIf="!loading && menuItems.length === 0" class="alert alert-light text-center">
+    No menu items found.
+  </div>
+
+  <!-- Cart Section -->
+  <!-- Cart Section -->
+  <div class="mt-5" *ngIf="cart.length > 0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Cart</h3>
+      <button class="btn btn-success" (click)="placeOrder()">Place Order</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of cart">
+            <td>{{ c.name }}</td>
+            <td>
+              <div style="display:flex; justify-content:center;">
+                <img *ngIf="c.image" [src]="c.image" alt="Image" style="width:80px; height:80px; object-fit:cover;">
+              </div>
+            </td>
+            <td>₹{{ c.price }}</td>
+            <td>{{ c.quantity }}</td>
+            <td>₹{{ c.price * (c.quantity || 0) }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" (click)="removeFromCart(c)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text-end">
+      <h4>Total: <span class="text-success fw-bold">₹{{ totalPrice }}</span></h4>
+    </div>
+  </div>
+
+  <!-- Order History -->
+  <div class="mt-5" *ngIf="orders.length > 0">
+    <h3>Order History</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Order ID</th>
+            <th>Menu Items</th>
+            <th>Total Price</th>
+            <th>Delivery Partner</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of orders">
+            <td>{{ o.id }}</td>
+            <!-- <td>
+            <span *ngFor="let key of getMenuItemKeys(o.menuItems)">
+              {{ key }}:{{ o.menuItems[key] }}<span *ngIf="!isLastKey(o.menuItems, key)">, </span>
+            </span>
+          </td> -->
+            <td>
+              <button class="btn btn-sm btn-info" (click)="openOrderItemsModal(o)">
+                View Items
+              </button>
+            </td>
+
+            <td>₹{{ o.totalPrice }}</td>
+            <td>{{ o.deliveryPartnerId }}</td>
+            <!-- <td>{{ o.status }}</td> -->
+            <td>
+              <div class="order-progress">
+                <div class="step" [ngClass]="{'active': isStepActive(o.status, 'ORDER_PLACED')}">
+                  <div class="dot"></div>
+                  <span>Order Placed</span>
+                </div>
+                <div class="step" [ngClass]="{'active': isStepActive(o.status, 'OUT_FOR_DELIVERY')}">
+                  <div class="dot"></div>
+                  <span>Out for Delivery</span>
+                </div>
+                <div class="step" [ngClass]="{'active': isStepActive(o.status, 'DELIVERED')}">
+                  <div class="dot"></div>
+                  <span>Delivered</span>
+                </div>
+                <div class="line"></div>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Order Items Modal -->
+  <div class="modal" tabindex="-1" [ngClass]="{'show': orderItemsModalOpen}"
+    [ngStyle]="{'display': orderItemsModalOpen ? 'block' : 'none'}">
+
+    <!-- Backdrop -->
+    <div class="modal fade show" *ngIf="orderItemsModalOpen" (click)="closeOrderItemsModal()"></div>
+
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ordered Items</h5>
+          <button type="button" class="btn-close" (click)="closeOrderItemsModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngFor="let item of menuDetails" class="d-flex align-items-center mb-3">
+            <img [src]="item.image" width="80" height="80" class="me-3 rounded" />
+            <div>
+              <h6 class="mb-1">{{ item.name }}</h6>
+              <p class="mb-0">₹ {{ item.price }}</p>
+              <p class="mb-0">Quantity: {{ item.quantity }}</p>
+              <span class="badge" [ngClass]="item.veg ? 'bg-success' : 'bg-danger'">
+                {{ item.veg ? 'Veg' : 'Non-Veg' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeOrderItemsModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

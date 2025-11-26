@@ -1,0 +1,55 @@
+.auth-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFF8F0;
+}
+
+.auth-card {
+    background: white;
+    padding: 40px;
+    width: 420px;
+    border-radius: 20px;
+}
+
+.auth-title {
+    font-weight: 700;
+    font-size: 28px;
+    color: #FF6F00;
+}
+
+.auth-subtitle {
+    margin-top: -5px;
+    margin-bottom: 20px;
+    color: #777;
+}
+
+.input-box {
+    height: 48px;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #FF6F00 !important;
+    border-radius: 10px;
+    height: 48px;
+}
+
+.link-highlight {
+    color: #FF6F00;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Smooth hover transition for login button */
+.btn-primary {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #084298 !important;
+    /* slightly darker blue */
+    transform: translateY(-2px);
+    /* gentle lift effect */
+}

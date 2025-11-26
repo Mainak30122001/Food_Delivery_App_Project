@@ -1,0 +1,31 @@
+<div class="auth-page">
+  <div class="auth-card shadow">
+    <h2 class="auth-title">Create Account 🧑‍🍳</h2>
+    <p class="auth-subtitle">Join and start ordering your favourites</p>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+    <label>Name</label>
+    <input class="form-control mb-3 input-box" [(ngModel)]="name" placeholder="Full name">
+
+    <label>Email</label>
+    <input class="form-control mb-3 input-box" [(ngModel)]="email" type="email" placeholder="Email">
+
+    <label>Password</label>
+    <input class="form-control mb-3 input-box" [(ngModel)]="password" type="password" placeholder="Password">
+
+    <label>User Role</label>
+    <select class="form-control mb-3 input-box" [(ngModel)]="role">
+      <option value="CUSTOMER">Customer</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+
+    <button class="btn btn-primary w-100" (click)="onRegister()">Register</button>
+
+    <p class="text-center mt-3">
+      Already have an account?
+      <a routerLink="/login" class="link-highlight">Login</a>
+    </p>
+  </div>
+</div>

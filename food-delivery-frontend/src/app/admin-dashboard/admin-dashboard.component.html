@@ -1,0 +1,350 @@
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-end p-3">
+        <button class="logout-icon-btn" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="logout-text">Logout</span>
+        </button>
+    </div>
+
+    <div class="admin-section">
+        <h2 class="section-title">Admin Dashboard – Manage Restaurants</h2>
+
+
+        <h2>🧑‍🍳 Order Analysis by Customer</h2>
+
+        <table class="table table-bordered table-striped table-hover mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Total Orders</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let stat of customerOrderStats">
+                    <td>{{ stat.customerName }}</td>
+                    <td>{{ stat.totalOrders }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <button class="btn btn-primary mb-3" (click)="openAddModal()">Add New Restaurant</button>
+
+        <!-- Loading -->
+        <div *ngIf="loading" class="alert alert-info">Loading... Please wait</div>
+
+        <!-- Error -->
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+        <!-- Restaurant Table -->
+        <table class="table table-bordered table-striped" *ngIf="!loading && restaurants.length > 0">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Cuisine</th>
+                    <th>Image</th>
+                    <th width="320">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of restaurants">
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.name }}</td>
+                    <td>{{ r.address }}</td>
+                    <td>{{ r.cuisine }}</td>
+                    <td>
+                        <div style="display:flex; justify-content:center;">
+                            <img *ngIf="r.image" [src]="r.image" alt="Image"
+                                style="width:80px; height:80px; object-fit:cover;">
+                        </div>
+                    </td>
+                    <td>
+                        <button class="action-btn action-menu" (click)="openMenuModal(r)">
+                            <i class="bi bi-list-ul"></i>
+                            <span class="label">Menu</span>
+                        </button>
+
+                        <button class="action-btn action-view" (click)="view(r)">
+                            <i class="bi bi-eye"></i>
+                            <span class="label">View</span>
+                        </button>
+
+                        <button class="action-btn action-edit" (click)="openUpdateModal(r)">
+                            <i class="bi bi-pencil-square"></i>
+                            <span class="label">Edit</span>
+                        </button>
+
+                        <button class="action-btn action-delete" (click)="delete(r.id)">
+                            <i class="bi bi-trash"></i>
+                            <span class="label">Delete</span>
+                        </button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- No restaurants message -->
+        <div *ngIf="!loading && restaurants.length === 0" class="alert alert-light">
+            No restaurants found.
+        </div>
+
+        <!-- Add / Update Restaurant Modal -->
+        <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': modalOpen}"
+            [style.display]="modalOpen ? 'block' : 'none'">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form (ngSubmit)="saveRestaurant()" #restaurantForm="ngForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ isUpdateMode ? 'Update' : 'Add' }} Restaurant</h5>
+                            <button type="button" class="btn-close" (click)="closeModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" [(ngModel)]="modalRestaurant.name"
+                                    required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" name="address"
+                                    [(ngModel)]="modalRestaurant.address" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Cuisine</label>
+                                <input type="text" class="form-control" name="cuisine"
+                                    [(ngModel)]="modalRestaurant.cuisine" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Image URL</label>
+                                <input type="text" class="form-control" name="image"
+                                    [(ngModel)]="modalRestaurant.image">
+                                <div *ngIf="modalRestaurant.image"
+                                    style="display:flex; justify-content:center; margin-top:10px;">
+                                    <img [src]="modalRestaurant.image" alt="Preview"
+                                        style="width:150px; height:150px; object-fit:cover;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary"
+                                [disabled]="restaurantForm.invalid || loading">
+                                {{ isUpdateMode ? 'Update' : 'Add' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Restaurant Modal -->
+        <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': viewModalOpen}"
+            [style.display]="viewModalOpen ? 'block' : 'none'">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Restaurant Details</h5>
+                        <button type="button" class="btn-close" (click)="viewModalOpen=false"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>ID:</strong> {{ viewRestaurant?.id }}</p>
+                        <p><strong>Name:</strong> {{ viewRestaurant?.name }}</p>
+                        <p><strong>Address:</strong> {{ viewRestaurant?.address }}</p>
+                        <p><strong>Cuisine:</strong> {{ viewRestaurant?.cuisine }}</p>
+                        <div *ngIf="viewRestaurant?.image" style="display:flex; justify-content:center;">
+                            <img [src]="viewRestaurant.image" alt="Image"
+                                style="width:150px; height:150px; object-fit:cover;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="viewModalOpen=false">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Items Modal -->
+        <div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': menuModalOpen}"
+            [style.display]="menuModalOpen ? 'block' : 'none'">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Menu Items - {{ selectedRestaurant?.name }}</h5>
+                        <button type="button" class="btn-close" (click)="menuModalOpen=false"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Add Menu Item Form -->
+                        <form (ngSubmit)="saveMenuItem()" #menuForm="ngForm" class="mb-3">
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" placeholder="Name"
+                                        [(ngModel)]="menuItem.name" name="name" required>
+                                </div>
+                                <div class="col mb-2">
+                                    <input type="number" class="form-control" placeholder="Price"
+                                        [(ngModel)]="menuItem.price" name="price" required>
+                                </div>
+
+                                <select class="col form-control mb-2" [(ngModel)]="menuItem.veg" name="veg" required>
+                                    <option [ngValue]="null">Select Type</option>
+                                    <option [ngValue]="true">Veg</option>
+                                    <option [ngValue]="false">Non-Veg</option>
+                                </select>
+
+                                <div class="col mb-2">
+                                    <input type="text" class="form-control" placeholder="Image URL"
+                                        [(ngModel)]="menuItem.image" name="image">
+                                </div>
+
+                                <div *ngIf="menuItem.image"
+                                    style="display:flex; justify-content:center; margin-top:10px;">
+                                    <img [src]="menuItem.image" alt="Preview"
+                                        style="width:80px; height:80px; object-fit:cover;">
+                                </div>
+
+
+                                <div class="col">
+                                    <button class="btn btn-success" type="submit"
+                                        [disabled]="menuForm.invalid">Add</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Menu Items Table -->
+                        <table class="table table-bordered table-striped" *ngIf="menuItems.length > 0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Type</th>
+                                    <th>Image</th>
+
+                                    <th width="200">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let m of menuItems">
+                                    <td>{{ m.id }}</td>
+                                    <td>{{ m.name }}</td>
+                                    <td>{{ m.price }}</td>
+                                    <td>
+                                        {{ m.veg === null ? '' : (m.veg ? 'Veg' : 'Non-Veg') }}
+                                    </td>
+                                    <td>
+                                        <div *ngIf="m.image" style="display:flex; justify-content:center;">
+                                            <img [src]="m.image" alt="Menu Image"
+                                                style="width:80px; height:80px; object-fit:cover;">
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        <button class="btn btn-primary btn-sm me-2"
+                                            (click)="editMenuItem(m)">Update</button>
+                                        <button class="btn btn-danger btn-sm"
+                                            (click)="deleteMenuItem(m.id)">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="menuItems.length === 0" class="alert alert-light">
+                            No menu items found.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <h3 class="mb-3">Pending Orders</h3>
+
+        <table class="table table-hover table-bordered" *ngIf="pendingOrders.length > 0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Menu Items</th>
+                    <th>Customer Id</th>
+                    <th>Deliver Partner Id</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let order of pendingOrders">
+                    <td>{{ order.id }}</td>
+
+                    <td>
+                        <button class="btn btn-sm btn-info" (click)="openOrderItemsModal(order)">
+                            View Items
+                        </button>
+                    </td>
+
+                    <td>{{ order.customerId }}</td>
+
+                    <td>{{ order.deliveryPartnerId }}</td>
+
+                    <td>₹ {{ order.totalPrice }}</td>
+
+                    <td>
+                        <select class="form-select" [(ngModel)]="order.status" style="width: 180px;">
+                            <option *ngFor="let s of orderStatusOptions" [value]="s">
+                                {{ s | titlecase }}
+                            </option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-primary btn-sm" (click)="updateOrderStatus(order)">
+                            Save
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="pendingOrders.length === 0" class="alert alert-secondary">
+            No pending orders found.
+        </div>
+
+        <!-- Order Items Modal -->
+        <div class="modal" tabindex="-1" [ngClass]="{'show': orderItemsModalOpen}"
+            [ngStyle]="{'display': orderItemsModalOpen ? 'block' : 'none'}">
+
+            <!-- Backdrop -->
+            <div class="modal fade show" *ngIf="orderItemsModalOpen" (click)="closeOrderItemsModal()"></div>
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ordered Items</h5>
+                        <button type="button" class="btn-close" (click)="closeOrderItemsModal()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngFor="let item of menuDetails" class="d-flex align-items-center mb-3">
+                            <img [src]="item.image" width="80" height="80" class="me-3 rounded" />
+                            <div>
+                                <h6 class="mb-1">{{ item.name }}</h6>
+                                <p class="mb-0">₹ {{ item.price }}</p>
+                                <p class="mb-0">Quantity: {{ item.quantity }}</p>
+                                <span class="badge" [ngClass]="item.veg ? 'bg-success' : 'bg-danger'">
+                                    {{ item.veg ? 'Veg' : 'Non-Veg' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" (click)="closeOrderItemsModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

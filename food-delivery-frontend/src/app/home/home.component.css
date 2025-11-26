@@ -1,0 +1,68 @@
+.home-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFF8F0;
+}
+
+.brand-card {
+    text-align: center;
+    padding: 45px;
+    border-radius: 20px;
+    background: white;
+    width: 550px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.logo {
+    width: 95px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #FF6F00;
+}
+
+.subtitle {
+    font-size: 17px;
+    color: #6c6c6c;
+    margin-bottom: 25px;
+}
+
+.btn-primary {
+    background-color: #FF6F00 !important;
+    border: none;
+    border-radius: 8px;
+}
+
+.btn-outline-primary {
+    border-color: #FF6F00 !important;
+    color: #FF6F00 !important;
+    border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+    background: #FF6F00 !important;
+    color: white !important;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

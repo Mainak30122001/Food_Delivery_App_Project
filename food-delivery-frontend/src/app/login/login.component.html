@@ -1,0 +1,21 @@
+<div class="auth-page">
+  <div class="auth-card shadow">
+    <h2 class="auth-title">Welcome Back 👋</h2>
+    <p class="auth-subtitle">Login to order delicious meals</p>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <label>Email</label>
+    <input [(ngModel)]="email" class="form-control mb-3 input-box" type="email" placeholder="Enter email">
+
+    <label>Password</label>
+    <input [(ngModel)]="password" class="form-control mb-3 input-box" type="password" placeholder="Enter password">
+
+    <button class="btn btn-primary w-100" (click)="onLogin()">Login</button>
+
+    <p class="mt-3 text-center">
+      Don't have an account?
+      <a routerLink="/register" class="link-highlight">Register</a>
+    </p>
+  </div>
+</div>

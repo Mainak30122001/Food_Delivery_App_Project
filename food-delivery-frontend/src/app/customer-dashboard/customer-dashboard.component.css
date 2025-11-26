@@ -1,0 +1,283 @@
+/* ======================================================
+    PREMIUM PEACH / ORANGE NEO–GLASS CUSTOMER DASHBOARD
+   Matching Admin Theme • Modern • Luxury • Food UI
+====================================================== */
+
+/* ===== Global Background ===== */
+body,
+.container {
+  background: linear-gradient(135deg, #ffe9d6, #ffd3b0);
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  padding-bottom: 50px;
+}
+
+/* ===== Glass Cards ===== */
+.dashboard-section {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 25px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: 0.3s ease;
+}
+
+.dashboard-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Titles ===== */
+h2,
+h3 {
+  font-weight: 800;
+  font-size: 28px;
+  background: linear-gradient(135deg, #ff7b00, #ff5500);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 18px;
+}
+
+/* ======================================================
+                MENU CARD STYLING
+====================================================== */
+
+.card {
+  border-radius: 18px;
+  overflow: hidden;
+  transition: 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  box-shadow: 0 8px 20px rgba(255, 120, 50, 0.15);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(255, 120, 50, 0.28);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Veg / Non-Veg Badges */
+.bg-success {
+  background-color: #34a853 !important;
+}
+
+.bg-danger {
+  background-color: #d93025 !important;
+}
+
+/* Quantity Buttons */
+.btn-outline-secondary {
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #ffe6d1;
+}
+
+/* ======================================================
+      ⭐ PREMIUM ADD TO CART BUTTON (Cart + Plus)
+====================================================== */
+
+.btn-add-cart {
+  background: linear-gradient(135deg, #ff8a00, #ff5500);
+  border: none;
+  transition: 0.3s ease;
+  font-weight: 700;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-add-cart i {
+  font-size: 20px;
+  transition: 0.3s ease;
+}
+
+/* Hover Shine + Icon Pop */
+.btn-add-cart:hover {
+  background: linear-gradient(135deg, #ff6d00, #e65100);
+  box-shadow: 0 10px 25px rgba(255, 94, 0, 0.35);
+  transform: translateY(-3px);
+}
+
+.btn-add-cart:hover i {
+  transform: scale(1.25);
+}
+
+/* ======================================================
+                    CART TABLE
+====================================================== */
+
+.table {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(255, 140, 50, 0.18);
+}
+
+.table thead {
+  background: linear-gradient(135deg, #ff8c2a, #ff6a00);
+  color: #fff;
+  font-size: 16px;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 180, 120, 0.15);
+}
+
+/* Remove Button */
+.btn-danger {
+  background: linear-gradient(135deg, #ff4b4b, #c40000);
+  border: none;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #e00000, #8c0000);
+  transform: translateY(-2px);
+}
+
+/* ======================================================
+                ORDER PROGRESS (GREEN THEME)
+====================================================== */
+
+.order-progress {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  width: 340px;
+  margin: 10px auto;
+}
+
+/* Step Dots */
+.step .dot {
+  width: 22px;
+  height: 22px;
+  background: #c4f7c4;
+  /* light green default */
+  border-radius: 50%;
+  margin: auto;
+  transition: 0.3s ease;
+}
+
+/* Active Step — GREEN */
+.step.active .dot {
+  background: linear-gradient(135deg, #00c853, #009624);
+  /* fresh green */
+  box-shadow: 0 0 10px rgba(0, 200, 80, 0.4);
+}
+
+/* Progress Line */
+.order-progress .line {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: calc(100% - 30px);
+  height: 4px;
+  background-color: #c4f7c4;
+  /* soft green line */
+  border-radius: 4px;
+}
+
+/* Filled Line Between Active Steps */
+.order-progress.active-2 .line,
+.order-progress.active-3 .line {
+  background: linear-gradient(135deg, #00e676, #00c853);
+}
+
+/* ======================================================
+                MODAL STYLING
+====================================================== */
+
+.modal-content {
+  border-radius: 20px;
+  background: rgba(255, 250, 245, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 40px rgba(255, 120, 40, 0.25);
+}
+
+.modal-header {
+  background: #ffe7d1;
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff6d00;
+}
+
+/* ======================================================
+        ⭐ LOGOUT BUTTON (Same as Admin)
+====================================================== */
+
+.logout-icon-btn {
+  background: linear-gradient(135deg, #ff5555, #b30000);
+  border-radius: 14px;
+  padding: 10px 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 50, 50, 0.25);
+  transition: 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Logout Icon */
+.logout-icon-btn i {
+  font-size: 22px;
+  transition: 0.2s ease;
+}
+
+/* Hidden Logout Text */
+.logout-icon-btn .logout-text {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 15px;
+  margin-left: 8px;
+  transition: max-width 0.35s ease, opacity 0.35s ease;
+}
+
+/* Hover Reveal Text */
+.logout-icon-btn:hover {
+  background: linear-gradient(135deg, #d10000, #660000);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(255, 0, 0, 0.35);
+}
+
+.logout-icon-btn:hover .logout-text {
+  max-width: 120px;
+  opacity: 1;
+}
+
+/* ======================================================
+                IMAGE STYLE
+====================================================== */
+
+img {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(255, 120, 40, 0.2);
+  transition: 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
