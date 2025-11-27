@@ -4,9 +4,8 @@
     justify-content: center;
     align-items: center;
 
-    /* 🌿 Light Green Background */
     background: #E8F5E9;
-    /* very light green */
+
 }
 
 .auth-card {
@@ -21,7 +20,6 @@
     font-weight: 700;
     font-size: 28px;
 
-    /* Dark green heading */
     color: #2E7D32;
 }
 
@@ -35,13 +33,12 @@
     height: 48px;
     border-radius: 10px;
     border: 1px solid #A5D6A7;
-    /* soft green border */
+
 }
 
-/* 🌿 Register Button */
+/* Register Button */
 .btn-primary {
     background-color: #2E7D32 !important;
-    /* dark green */
     border-radius: 10px;
     height: 48px;
     border: none;
@@ -49,16 +46,15 @@
     /* smooth transition */
 }
 
-/* 🌿 Hover Effect */
+/* Hover Effect */
 .btn-primary:hover {
     background-color: #1B5E20 !important;
-    /* darker green on hover */
+
 }
 
-/* 🔗 Link styling */
+/*  Link styling */
 .link-highlight {
     color: #1B5E20;
-    /* dark green */
     font-weight: 600;
     text-decoration: none;
 }

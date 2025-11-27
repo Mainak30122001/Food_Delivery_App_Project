@@ -8,12 +8,12 @@ import { AuthService } from '../auth/auth.service';
   template: `<p>Redirecting...</p>`,
 })
 export class HomeComponent implements OnInit {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     const role = this.auth.getRole();
     if (role === 'CUSTOMER') this.router.navigate(['/customer-dashboard']);
-    // else if (role === 'DELIVERY_AGENT') this.router.navigate(['/delivery-dashboard']);
+    //'ADMIN' can make changes in delivery tracking things
     else if (role === 'ADMIN') this.router.navigate(['/admin-dashboard']);
     else this.router.navigate(['/login']); // not logged in
   }

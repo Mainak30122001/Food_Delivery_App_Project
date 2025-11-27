@@ -12,7 +12,7 @@ export class AuthService {
   role = signal<string | null>(null);
   name = signal<string | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Login API
   login(data: any) {
@@ -25,9 +25,9 @@ export class AuthService {
   }
 
   saveSession(token: string) {
-    console.log('TOKEN STRING =', token); // this should print only the JWT string
+    console.log('TOKEN STRING =', token);
 
-    const decoded: any = jwtDecode(token); // this will now work
+    const decoded: any = jwtDecode(token);
 
     localStorage.setItem('token', token);
     localStorage.setItem('role', decoded.role);

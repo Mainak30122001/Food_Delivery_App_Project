@@ -108,11 +108,7 @@
         <tbody>
           <tr *ngFor="let o of orders">
             <td>{{ o.id }}</td>
-            <!-- <td>
-            <span *ngFor="let key of getMenuItemKeys(o.menuItems)">
-              {{ key }}:{{ o.menuItems[key] }}<span *ngIf="!isLastKey(o.menuItems, key)">, </span>
-            </span>
-          </td> -->
+
             <td>
               <button class="btn btn-sm btn-info" (click)="openOrderItemsModal(o)">
                 View Items
@@ -121,7 +117,7 @@
 
             <td>₹{{ o.totalPrice }}</td>
             <td>{{ o.deliveryPartnerId }}</td>
-            <!-- <td>{{ o.status }}</td> -->
+
             <td>
               <div class="order-progress">
                 <div class="step" [ngClass]="{'active': isStepActive(o.status, 'ORDER_PLACED')}">

@@ -21,7 +21,6 @@ export class LoginComponent {
   ngOnInit() {
     const role = this.auth.getRole();
     if (role === 'CUSTOMER') this.router.navigate(['/customer-dashboard']);
-    // else if (role === 'DELIVERY_AGENT') this.router.navigate(['/delivery-dashboard']);
     else if (role === 'ADMIN') this.router.navigate(['/admin-dashboard']);
   }
 

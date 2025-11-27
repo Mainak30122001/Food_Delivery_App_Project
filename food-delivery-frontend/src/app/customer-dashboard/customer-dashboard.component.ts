@@ -42,7 +42,7 @@ export class CustomerDashboardComponent implements OnInit {
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) { }
 
   orderItemsModalOpen = false;
   menuDetails: any[] = [];
@@ -50,7 +50,7 @@ export class CustomerDashboardComponent implements OnInit {
   ngOnInit() {
     const role = this.auth.getRole();
     if (role !== 'CUSTOMER') {
-      if(role === 'ADMIN'){
+      if (role === 'ADMIN') {
         this.router.navigate(['/admin-dashboard']);
         return;
       }
@@ -60,7 +60,7 @@ export class CustomerDashboardComponent implements OnInit {
     this.fetchCustomerIdAndLoadData();
   }
 
-    logout() {
+  logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
   }
@@ -197,7 +197,7 @@ export class CustomerDashboardComponent implements OnInit {
 
     this.http.get<Order[]>(`${this.ORDER_URL}/customer/${this.customerId}`).subscribe({
       next: (res) => {
-        this.orders = res.reverse(); // recent first
+        this.orders = res.reverse();
         this.cdr.detectChanges();
       },
       error: () => {
